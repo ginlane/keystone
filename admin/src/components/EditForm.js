@@ -1,5 +1,6 @@
 var _ = require('underscore'),
 	moment = require('moment'),
+	SirTrevor = require('sir-trevor/sir-trevor.min'),
 	React = require('react'),
 	Fields = require('FieldTypes'),
 	FormHeading = require('./FormHeading'),
@@ -32,7 +33,30 @@ var EditForm = React.createClass({
 			values: values
 		});
 	},
-	
+
+	componentDidMount: function() {
+		SirTrevor.config.debug = true;
+		SirTrevor.config.scribeDebug = true;
+		SirTrevor.config.language = 'en';
+
+		window.editor = new SirTrevor.Editor({
+		el: $('textarea[name="blocks"]'),
+		blockTypes: [
+			'Heading',
+			'Text',
+			'List',
+			'Quote',
+			'Image',
+			'Video',
+			'Tweet'
+		]
+		});
+
+		$('form').bind('submit', function () {
+			$('textarea[name="blocks"]').text(window.editor.store.toString(true));
+		});
+	},
+
 	renderNameField: function() {
 		
 		var nameField = this.props.list.nameField,
