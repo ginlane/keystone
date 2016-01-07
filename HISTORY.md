@@ -2,6 +2,14 @@
 
 KeystoneJS is maintained by [@JedWatson](https://github.com/JedWatson) and an amazing team of contributors. All contributions are given credit here except for Jed's.
 
+## v0.3.17.sirtrevor / 2016-01-07
+
+* fixed; sir trevor should not be babelified
+
+## v0.3.16.sirtrevor / 2016-01-06
+
+* added; sir trevor dependency
+
 ## v0.3.16 / 2015-12-04
 
 * fixed; issues deleting real files on disk for the `LocalFiles` field type, thanks [Javier Castro](https://github.com/jacargentina)
