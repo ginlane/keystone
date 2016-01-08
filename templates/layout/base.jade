@@ -98,6 +98,7 @@ html
 		script(src="/keystone/js/lib/pikaday/pikaday.jquery-1.1.0.js")
 		script(src="/keystone/js/lib/jquery-placeholder-shim/jquery-placeholder-shim.js")
 		script(src="/keystone/js/lib/tinymce/tinymce.min.js")
+		script(src="/keystone/js/lib/sir-trevor/sir-trevor.min.js")
 		block js_codemirror
 
 		//- App
@@ -110,6 +111,8 @@ html
 			Keystone.csrf.key = "#{csrf_token_key}";
 			Keystone.csrf.value = "#{csrf_token_value}";
 			Keystone.csrf.query = "!{csrf_query}";
+			Keystone.sirTrevor = SirTrevor;
+		
 		if cloudinary
 			script(src='/keystone/js/lib/jqueryfileupload/vendor/jquery.ui.widget.js')
 			script(src='/keystone/js/lib/jqueryfileupload/jquery.iframe-transport.js')

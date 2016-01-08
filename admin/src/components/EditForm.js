@@ -1,6 +1,5 @@
 var _ = require('underscore'),
 	moment = require('moment'),
-	SirTrevor = require('sir-trevor/sir-trevor.min'),
 	React = require('react'),
 	Fields = require('FieldTypes'),
 	FormHeading = require('./FormHeading'),
@@ -39,17 +38,10 @@ var EditForm = React.createClass({
 		SirTrevor.config.scribeDebug = true;
 		SirTrevor.config.language = 'en';
 
+		console.log(Keystone);
+
 		window.editor = new SirTrevor.Editor({
-		el: $('textarea[name="blocks"]'),
-		blockTypes: [
-			'Heading',
-			'Text',
-			'List',
-			'Quote',
-			'Image',
-			'Video',
-			'Tweet'
-		]
+			el: $('textarea[name="blocks"]')
 		});
 
 		$('form').bind('submit', function () {
