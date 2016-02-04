@@ -11,7 +11,7 @@ var util = require('util'),
  * @api public
  */
 
-function textarray(list, path, options) {
+function textarray (list, path, options) {
 	this._nativeType = [String];
 
 	textarray.super_.call(this, list, path, options);
@@ -29,7 +29,7 @@ util.inherits(textarray, super_);
  * @api public
  */
 
-textarray.prototype.validateInput = function(data, required, item) {
+textarray.prototype.inputIsValid = function (data, required, item) {
 	var value = this.getValueFromData(data);
 
 	if (required) {
@@ -52,9 +52,9 @@ textarray.prototype.validateInput = function(data, required, item) {
  * @api public
  */
 
-textarray.prototype.updateItem = function(item, data) {
+textarray.prototype.updateItem = function (item, data, callback) {
 	var value = this.getValueFromData(data);
-	
+
 	if ('undefined' !== typeof value) {
 		if (value === null) {
 			value = [];
@@ -69,10 +69,12 @@ textarray.prototype.updateItem = function(item, data) {
 			item.set(this.path, value);
 		}
 	}
+
+	process.nextTick(callback);
 };
 
 /*!
  * Export class
  */
 
-exports = module.exports = textarray;
+module.exports = textarray;

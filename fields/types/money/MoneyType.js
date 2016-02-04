@@ -8,7 +8,7 @@ var util = require('util');
  * @extends Field
  * @api public
  */
-function money(list, path, options) {
+function money (list, path, options) {
 	this.currency = options.currency;
 	this._nativeType = Number;
 	this._underscoreMethods = ['format'];
@@ -24,12 +24,12 @@ util.inherits(money, FieldType);
 
 /* Inherit from NumberType prototype */
 money.prototype.updateItem = NumberType.prototype.updateItem;
-money.prototype.validateInput = NumberType.prototype.validateInput;
+money.prototype.inputIsValid = NumberType.prototype.inputIsValid;
 
 /**
  * Formats the field value
  */
-money.prototype.format = function(item, format) {
+money.prototype.format = function (item, format) {
 	if (this.currency) {
 		try {
 			numeral.language(this.currency, require('numeral/languages/' + this.currency));
@@ -46,4 +46,4 @@ money.prototype.format = function(item, format) {
 };
 
 /* Export Field Type */
-exports = module.exports = money;
+module.exports = money;

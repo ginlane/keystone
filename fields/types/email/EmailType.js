@@ -9,10 +9,9 @@ var utils = require('keystone-utils');
  * @extends Field
  * @api public
  */
-function email(list, path, options) {
+function email (list, path, options) {
 	this._nativeType = String;
 	this._underscoreMethods = ['gravatarUrl'];
-	this._fixedSize = 'large';
 	this.typeDescription = 'email address';
 	email.super_.call(this, list, path, options);
 }
@@ -24,7 +23,7 @@ email.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
 /**
  * Generate a gravatar image request url
  */
-email.prototype.gravatarUrl = function(item, size, defaultImage, rating) {
+email.prototype.gravatarUrl = function (item, size, defaultImage, rating) {
 	var value = item.get(this.path);
 	if ('string' !== typeof value) {
 		return '';
@@ -39,14 +38,14 @@ email.prototype.gravatarUrl = function(item, size, defaultImage, rating) {
 		// default image url encoded href or one of the built in options: 404, mm, identicon, monsterid, wavatar, retro, blank
 		'&d=' + (defaultImage ? encodeURIComponent(defaultImage) : 'identicon'),
 		// rating, g, pg, r or x
-		'&r=' + (/^(?:g|pg|r|x)$/i.test(rating) ? rating.toLowerCase() : 'g')
+		'&r=' + (/^(?:g|pg|r|x)$/i.test(rating) ? rating.toLowerCase() : 'g'),
 	].join('');
 };
 
 /**
  * Validates that a valid email has been provided in a data object
  */
-email.prototype.validateInput = function(data, required, item) {
+email.prototype.inputIsValid = function (data, required, item) {
 	var value = this.getValueFromData(data);
 	if (value) {
 		return utils.isEmail(value);
@@ -59,7 +58,7 @@ email.prototype.validateInput = function(data, required, item) {
  * Updates the value for this field in the item from a data object
  * Ensures that the email address is lowercase
  */
-email.prototype.updateItem = function(item, data) {
+email.prototype.updateItem = function (item, data, callback) {
 	var newValue = this.getValueFromData(data);
 	if ('string' === typeof newValue) {
 		newValue = newValue.toLowerCase();
@@ -67,7 +66,8 @@ email.prototype.updateItem = function(item, data) {
 	if (newValue !== undefined && newValue !== item.get(this.path)) {
 		item.set(this.path, newValue);
 	}
+	process.nextTick(callback);
 };
 
 /* Export Field Type */
-exports = module.exports = email;
+module.exports = email;

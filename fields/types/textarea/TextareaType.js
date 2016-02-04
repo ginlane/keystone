@@ -8,7 +8,7 @@ var utils = require('keystone-utils');
  * @extends Field
  * @api public
  */
-function textarea(list, path, options) {
+function textarea (list, path, options) {
 	this._nativeType = String;
 	this._underscoreMethods = ['format', 'crop'];
 	this.height = options.height || 90;
@@ -25,9 +25,9 @@ textarea.prototype.crop = TextType.prototype.crop;
  * Formats the field value
  * @api public
  */
-textarea.prototype.format = function(item) {
+textarea.prototype.format = function (item) {
 	return utils.textToHTML(item.get(this.path));
 };
 
 /* Export Field Type */
-exports = module.exports = textarea;
+module.exports = textarea;

@@ -2,9 +2,9 @@
  * Module dependencies.
  */
 
-var util = require('util'),
-	marked = require('marked'),
-	super_ = require('../Type');
+var util = require('util');
+var marked = require('marked');
+var super_ = require('../Type');
 
 /**
  * Markdown FieldType Constructor
@@ -12,14 +12,15 @@ var util = require('util'),
  * @api public
  */
 
-function markdown(list, path, options) {
-	
+function markdown (list, path, options) {
+
 	this._defaultSize = 'full';
-	
+
 	// TODO: implement filtering, usage disabled for now
 	options.nofilter = true;
 
 	this.toolbarOptions = options.toolbarOptions || {};
+	this.markedOptions = options.markedOptions || {};
 	this.height = options.height || 90;
 
 	// since wysiwyg option can be falsey this needs to use `in` instead of ||
@@ -47,23 +48,25 @@ util.inherits(markdown, super_);
  * @api public
  */
 
-markdown.prototype.addToSchema = function() {
+markdown.prototype.addToSchema = function () {
 
 	var schema = this.list.schema;
 
 	var paths = this.paths = {
 		md: this._path.append('.md'),
-		html: this._path.append('.html')
+		html: this._path.append('.html'),
 	};
 
-	var setMarkdown = function(value) {
+	var markedOptions = this.markedOptions;
+
+	var setMarkdown = function (value) {
 
 		if (value === this.get(paths.md)) {
 			return value;
 		}
 
 		if (typeof value === 'string') {
-			this.set(paths.html, marked(value));
+			this.set(paths.html, marked(value, markedOptions));
 			return value;
 		} else {
 			this.set(paths.html, undefined);
@@ -75,7 +78,7 @@ markdown.prototype.addToSchema = function() {
 	schema.nested[this.path] = true;
 	schema.add({
 		html: { type: String },
-		md: { type: String, set: setMarkdown }
+		md: { type: String, set: setMarkdown },
 	}, this.path + '.');
 
 	this.bindUnderscoreMethods();
@@ -88,7 +91,7 @@ markdown.prototype.addToSchema = function() {
  * @api public
  */
 
-markdown.prototype.format = function(item) {
+markdown.prototype.format = function (item) {
 	return item.get(this.paths.html);
 };
 
@@ -101,7 +104,7 @@ markdown.prototype.format = function(item) {
  * @api public
  */
 
-markdown.prototype.validateInput = function(data, required, item) {
+markdown.prototype.inputIsValid = function (data, required, item) {
 	if (!(this.path in data || this.paths.md in data) && item && item.get(this.paths.md)) {
 		return true;
 	}
@@ -115,7 +118,7 @@ markdown.prototype.validateInput = function(data, required, item) {
  * @api public
  */
 
-markdown.prototype.isModified = function(item) {
+markdown.prototype.isModified = function (item) {
 	return item.isModified(this.paths.md);
 };
 
@@ -128,13 +131,14 @@ markdown.prototype.isModified = function(item) {
  * @api public
  */
 
-markdown.prototype.updateItem = function(item, data) {
+markdown.prototype.updateItem = function (item, data, callback) {
 	var value = this.getValueFromData(data);
 	if (value !== undefined) {
 		item.set(this.paths.md, value);
 	} else if (this.paths.md in data) {
 		item.set(this.paths.md, data[this.paths.md]);
 	}
+	process.nextTick(callback);
 };
 
 
@@ -142,4 +146,4 @@ markdown.prototype.updateItem = function(item, data) {
  * Export class
  */
 
-exports = module.exports = markdown;
+module.exports = markdown;

@@ -8,7 +8,7 @@ var util = require('util');
  * @extends Field
  * @api public
  */
-function code(list, path, options) {
+function code (list, path, options) {
 	this._nativeType = String;
 	this._defaultSize = 'full';
 	this.height = options.height || 180;
@@ -24,4 +24,4 @@ util.inherits(code, FieldType);
 code.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
 
 /* Export Field Type */
-exports = module.exports = code;
+module.exports = code;
